@@ -1,0 +1,45 @@
+import express from 'express'
+import http from 'http'
+import  config from './config/config.js'
+import { routes } from './src/routes/routes.js'
+import morgan from 'morgan'
+import { conectarDB } from './config/db.js'
+import passport from 'passport'
+import session from 'express-session'
+import { ConectarPassport } from './passport/passport.js'
+import MongoStore from 'connect-mongo'
+//import cors from 'cors'
+const app = express()
+const server = http.createServer(app)
+
+app.use(morgan('dev'))
+//app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
+conectarDB()
+
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
+app.use(session({
+  secret: 'secreto',
+  resave: false,
+  saveUninitialized: false,
+
+  store: MongoStore.create({
+    mongoUrl:config.BASE,
+    mongoOptions: advancedOptions,
+    collectionName: 'sessions',
+    ttl: 10 * 60
+  })
+}))
+
+ConectarPassport()
+app.use(passport.initialize())
+app.use(passport.session())
+routes(app)
+
+
+const port = config.PORT|| '5000'
+app.set('port', port)
+server.listen(port).on('error', error => {
+  console.log(`server error:${error}`)
+})
+console.log('Server listening  on port ' + port + ' pid:' + process.pid)
