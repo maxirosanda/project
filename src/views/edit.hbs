@@ -1,0 +1,37 @@
+{{#each product}}
+
+ <form action="/products?_method=PUT" method="POST" enctype="multipart/form-data">
+ <input type="hidden" value={{_id}} name="_id">
+ <input type="hidden" value={{url}} name="url">
+  <div class="mb-3">
+    <label  class="form-label">Nombre</label>
+    <input type="text" class="form-control" value={{name}} name="name">
+  </div>
+    <div class="mb-3">
+    <label  class="form-label">Descripcion</label>
+    <input type="text" class="form-control" value={{description}} name="description">
+  </div>
+    <div class="mb-3">
+    <label  class="form-label">Categoria</label>
+    <input type="text" class="form-control" value={{category}} name="category">
+  </div>
+       <div class="mb-3">
+    <label for="imagen">Ingresar Imagen del Producto</label>
+    <input type="file" accept="image/x-png,image/gif,image/jpeg" class="form-control-file" name="newurl">
+  </div>
+    <div class="mb-3">
+    <label  class="form-label">Precio</label>
+    <input type="number" class="form-control" value={{price}} name="price">
+  </div>
+      <div class="mb-3">
+    <label  class="form-label">Stock</label>
+    <input type="number" class="form-control" value={{stock}} name="stock">
+  </div>
+  <button type="submit" class="btn btn-primary">Actualizar</button>
+</form>
+<form action="/products?_method=DELETE" method="POST">
+      <input type="hidden"  class="form-control" name="url" value={{url}}>
+       <input type="hidden" value={{_id}} name="_id">
+      <button type="submit" class="btn btn-primary">Borrar</button>
+    </form>
+{{/each}}

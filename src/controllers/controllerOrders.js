@@ -5,7 +5,6 @@ import enviarmail from '../utils/email.js'
 import config from '../../config/config.js'
 
 export const read = async (req, res, next) => {
-  console.log("hofdklh")
   try {
     const orders = await Order.find({_idUser:req.user._id}).lean()
         await res.status(200).json(orders)  

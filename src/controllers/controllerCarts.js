@@ -2,7 +2,6 @@ import Cart from '../../models/carts.js'
 import Product from '../../models/products.js'
 
 export const read = async (req, res, next) => {
-  console.log("hofdklh")
     try {
       
       const cartfound = await Cart.find({_idUser:req.user._id}).lean()
@@ -12,7 +11,7 @@ export const read = async (req, res, next) => {
         return res.status(200).json({mensaje:"no se encontro el carrito"})
        }
 
-      const product= {}
+      let product= {}
       const products = []
 
 
