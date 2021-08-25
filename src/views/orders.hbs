@@ -1,0 +1,13 @@
+{{< navbar}}
+{{#each orders}}
+<h2>Pedido con id: {{_id}}</h2>
+<h3>Productos :</h3>
+{{#each products}}
+
+     <h4 class="my-3">Npmbre :{{nombre}}</h4>
+     <img src="./img/productos/{{url}}" class="img-fluid mb-2"  alt="Responsive image">
+     <h4 class="fmb-2"> Precio: {{precio}} <h4>
+     <h4 class="mb-5"> Cantidad: {{cant_compra}} </h4>
+     
+   {{/each}}   
+ {{/each}}

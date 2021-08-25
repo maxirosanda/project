@@ -21,7 +21,7 @@ export const routes = app => {
     app.get('/product/edit/:_id',middlewareAdmin.auth,controllerProducts.edit)
     app.get('/products/edit',middlewareAdmin.auth,controllerProducts.add)
     app.get('/products',middlewareClient.auth,controllerProducts.read)
-    app.get('/products/:_id',middlewareClient.auth,controllerProducts.readId)
+    app.get('/product/:_id',middlewareClient.auth,controllerProducts.readId)
     app.post('/products',middlewareClient.auth,controllerProducts.create)
     app.put('/products',middlewareClient.auth,controllerProducts.update)
     app.delete('/products',middlewareClient.auth,controllerProducts.del)
@@ -30,12 +30,11 @@ export const routes = app => {
     app.get('/cart/:_id',middlewareClient.auth,controllerCarts.read)
     app.post('/cart',middlewareClient.auth,controllerCarts.create)
     app.put('/cart',middlewareClient.auth,controllerCarts.update)
-    app.delete('/cart',middlewareClient.auth,controllerCarts.delprod)
-    app.delete('/cart/:_id',middlewareClient.auth,controllerCarts.del)
+    app.delete('/cart',middlewareClient.auth,controllerCarts.del)
 
     //Orders
-    app.get('/order/:_id',middlewareClient.auth,controllerOrders.read)
-    app.post('/order',middlewareClient.auth,controllerOrders.create)
+    app.get('/orders',middlewareClient.auth,controllerOrders.read)
+    app.get('/order',middlewareClient.auth,controllerOrders.create)
 
 
 }

@@ -10,14 +10,14 @@ export const edit = async (req,res)=>{
   if (!productfound) {
     return res.status(200).render("nofound",{message:"no se encontro el Producto"})
   }
-  res.status(200).render('editproduct',{product:productfound})
+  res.status(200).render('editproduct',{product:productfound,_id:req.user._id})
 }
 
 export const add = async (req, res, next) => {
     try {
           const products = await Product.find({}).lean()
 
-          res.status(200).render("editproducts",{products:products})
+          res.status(200).render("editproducts",{products:products,_id:req.user._id})
 
     } 
     catch (e) { console.log(e) }
@@ -27,7 +27,7 @@ export const add = async (req, res, next) => {
     try {
           const products = await Product.find({}).lean()
 
-          res.status(200).render("products",{products:products})
+          res.status(200).render("products",{products:products,_id:req.user._id})
 
     } 
     catch (e) { console.log(e) }
@@ -41,14 +41,14 @@ export const add = async (req, res, next) => {
             return res.status(200).render("nofound",{message:"no se encontro el Producto"})
           }
 
-          await res.status(200).json(productfound)  
+          res.status(200).render("product",{product:productfound,_id:req.user._id}) 
     } 
     catch (e) { console.log(e) }
   }
 
   export const create = async (req, res, next) => {
     try {
-           req.body.url = req.body.nombre + generator(10) + ".png"
+           req.body.url = req.body.name + generator(10) + ".png"
 
             const product= new Product(req.body)
             await product.save()
