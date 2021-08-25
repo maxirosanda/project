@@ -22,7 +22,6 @@ export const read = async (req, res, next) => {
         products.push(product[0])
       i++
       }
-  console.log(products)
 
   if ((Object.entries(products).length === 0)) {
     return res.status(200).render("nofound",{message:"No hay productos en el carrito",_id:req.user._id})

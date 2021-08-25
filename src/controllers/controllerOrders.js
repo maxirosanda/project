@@ -7,7 +7,7 @@ import config from '../../config/config.js'
 export const read = async (req, res, next) => {
   try {
     const orders = await Order.find({_idUser:req.user._id}).lean()
-    console.log(orders)
+    
         await res.status(200).render('orders',{orders:orders,_id:req.user._id})  
   } 
   catch (e) { console.log(e) }
@@ -29,11 +29,12 @@ export const create = async (req, res, next) => {
 
       let i = 0;
       while(i<=cartfound[0].items.length-1){
-        product = await Product.find({_id:cartfound[0].items[i]._id})
-        products.push(product)
+        product = await Product.find({_id:cartfound[0].items[i]._id}).lean()
+        product[0].quantity=cartfound[0].items[i].quantity
+        products.push(product[0])
       i++
       }
-      console.log(products)
+
             const neworder = {
               _idUser: req.user._id,
               name: req.user.name,
@@ -59,7 +60,7 @@ export const create = async (req, res, next) => {
             html: `Un nuevo usuario con nombre: ${req.user.name} realizo una orden`,
         })
 
-            await res.status(200).json(order)  
+            await res.status(200).render('order',{order:order,_id:req.user._id})
         } 
     catch (e) { console.log(e) }
   }
