@@ -1,7 +1,5 @@
 {{> navbar}}
-{{#each order}}
-<h2>Pedido con id: {{_id}}</h2>
-<h3>Productos :</h3>
+{{_id}}
 {{#each items}}
 
      <h4 class="my-3">Nombre de Producto :{{name}}</h4>
@@ -11,4 +9,3 @@
      <h4 class="mb-5"> Cantidad: {{quantity}} </h4>
      
    {{/each}}   
- {{/each}}

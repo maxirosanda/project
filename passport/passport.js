@@ -5,7 +5,7 @@ import passport from 'passport'
 import Local from 'passport-local'
 import bcrypt from 'bcrypt'
 import  config from '../config/config.js'
-
+import enviarmail from '../src/utils/email.js'
 
 mongoose.set('useCreateIndex', true)
 const LocalStrategy = Local.Strategy
@@ -47,6 +47,19 @@ export const ConectarPassport = () => {
               newUser.address = req.body.address,
               newUser.name=req.body.name 
 
+              enviarmail({
+                from:config.MAIL,
+                to: newUser.email,
+                subject: `Usted se registro en nuestra app`,
+                html: `Usted se registro en nuestra app`,
+            })
+            enviarmail({
+              from:config.MAIL,
+              to: config.MAIL,
+              subject: `Nuevo usuario registrado con el nombre de usuario ${newUser.name}`,
+              html: `Nuevo usuario registrado con el nombre de usuario ${newUser.name}`,
+          })
+
               newUser.save(function (err) {
                 if (err) { throw err }
                 return done(null, newUser)
@@ -54,6 +67,7 @@ export const ConectarPassport = () => {
             }
           })
       }
+ 
       process.nextTick(findOrCreateUser)
     })
   )

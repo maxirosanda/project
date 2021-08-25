@@ -34,7 +34,7 @@ app.use(
 //app.use(cookieParser())
 
 app.use(methodOverride('_method'))
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 conectarDB()

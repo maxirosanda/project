@@ -3,11 +3,12 @@ import Cart from '../../models/carts.js'
 import Product from '../../models/products.js'
 import enviarmail from '../utils/email.js'
 import config from '../../config/config.js'
+import { json } from 'express'
 
 export const read = async (req, res, next) => {
   try {
     const orders = await Order.find({_idUser:req.user._id}).lean()
-    
+        console.log(orders)
         await res.status(200).render('orders',{orders:orders,_id:req.user._id})  
   } 
   catch (e) { console.log(e) }
@@ -29,9 +30,20 @@ export const create = async (req, res, next) => {
 
       let i = 0;
       while(i<=cartfound[0].items.length-1){
+       
         product = await Product.find({_id:cartfound[0].items[i]._id}).lean()
         product[0].quantity=cartfound[0].items[i].quantity
         products.push(product[0])
+          //---------------------      
+          const newproduct = {stock:(product[0].stock-cartfound[0].items[i].quantity)}
+          await Product.find({_id:cartfound[0].items[i]._id}).lean()
+         await Product.findOneAndUpdate(
+           { _id:cartfound[0].items[i]._id },
+           { $set: newproduct },
+           { new: true }
+         )
+         //---------------------
+
       i++
       }
 
@@ -46,8 +58,8 @@ export const create = async (req, res, next) => {
             const order= new Order(neworder)
             await order.save()
             await Cart.deleteOne({ _idUser:req.user._id})
-
-            enviarmail({
+/*
+         enviarmail({
               from:config.MAIL,
               to: req.user.email,
               subject: `Su compra esta en proceso`,
@@ -59,8 +71,9 @@ export const create = async (req, res, next) => {
             subject: `Orden del usuario ${req.user.name}`,
             html: `Un nuevo usuario con nombre: ${req.user.name} realizo una orden`,
         })
+*/
 
-            await res.status(200).render('order',{order:order,_id:req.user._id})
+             res.status(200).render('order',{order:order,items:order.items,_id:req.user._id})
         } 
     catch (e) { console.log(e) }
   }
