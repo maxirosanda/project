@@ -4,11 +4,11 @@
   <thead>
     <tr>
       <th scope="col">Nombre</th>
+      <th scope="col">Foto</th>
+      <th scope="col">Descripcion</th>
       <th scope="col">Categoria</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Stock</th>
-      <th></th>
-      <th></th>
+      <th scope="col" >Precio</th>
+      <th scope="col" >Cantidad</th>
       <th></th>
     </tr>
   </thead>
@@ -17,6 +17,7 @@
     {{#each products}}
     <form action="/cart" method="POST" class="my-5">
       <th scope="row">{{name}} </th>
+      <td><img src="../../img/products/{{url}}" class="img-fluid w-25" alt="Responsive image"></td>
       <td>{{category}}</td>
       <td>{{price}}</td>
       <td>{{stock}}</td>

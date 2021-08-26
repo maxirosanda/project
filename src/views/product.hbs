@@ -2,9 +2,10 @@
 
     {{#each product}}
 <div class="card mb-3 mt-5">
-  <img src="./img/products/{{url}}" class="card-img-top "  style="width: 25%" alt="...">
+  <img src="../../img/products/{{url}}" class="card-img-top "  style="width: 25%" alt="...">
   <div class="card-body">
-    <h5 class="card-title">{{url}}</h5>{{description}}</p>
+    <h5 class="card-title">{{de}}</h5>
+   <p> {{description}}</p>
     <p class="card-text"><small class="text-muted">El codigo de Producto es : {{_id}}</small></p>
     <h5>Precio: {{price}}</h5>
     
@@ -12,9 +13,10 @@
 
  <input type="hidden" class="form-control" name="_id" value={{_id}} aria-describedby="emailHelp"  readonly>
 
-<input type="number" class="form-control" style="width: 25%" name="quantity" min="1" value="1" max={{stock}} aria-describedby="emailHelp" required>
+<input type="number" class="form-control"  name="quantity" min="1" value="1" max={{stock}} aria-describedby="emailHelp" required>
 <button type="submit" class="btn btn-primary my-5">Agregar al Carrito</button>
       </form>
+</div>
 </div>
 
     {{/each}}

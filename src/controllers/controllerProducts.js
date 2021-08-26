@@ -28,23 +28,7 @@ export const add = async (req, res, next) => {
   export const read = async (req, res, next) => {
     try {
           let products = await Product.find({}).lean()
-          const cartfound = await Cart.find({_idUser:req.user._id}).lean()
-                    //----------------------------------
-        let product= {}
-        let productsincart=[]
-        let productsfilter
-        let i = 0;
-      while(i<=cartfound[0].items.length-1){
-        product =  await Product.find({_id:cartfound[0].items[i]._id}).lean()
-        product[0].stock= product[0].stock-cartfound[0].items[i].quantity
-        productsfilter=products.filter(el => el._id !== product[0]._id )
-        productsincart.push(product[0])
-      i++
-      }
-      
-      
-      //-----------------------------------------------------
-          res.status(200).render("products",{products:productsfilter,_id:req.user._id})
+          res.status(200).render("products",{products:products,_id:req.user._id})
 
     } 
     catch (e) { console.log(e) }
@@ -59,14 +43,14 @@ export const add = async (req, res, next) => {
           }
         
 
-          res.status(200).render("product",{product:products,_id:req.user._id}) 
+          res.status(200).render("product",{product:productfound,_id:req.user._id}) 
     } 
     catch (e) { console.log(e) }
   }
 
   export const create = async (req, res, next) => {
     try {
-           req.body.url = req.body.name + generator(10) + ".png"
+           req.body.url = generator(20) + ".png"
 
             const product= new Product(req.body)
             await product.save()
@@ -76,7 +60,7 @@ export const add = async (req, res, next) => {
               if(err) return res.status(500).send({ message : err })
               return res.status(200).render("nofound",{message:"no se encontro el Producto"})
               })
-            await res.status(200).redirect("/products/edit")  
+             res.status(200).redirect("/products/edit")  
         } 
     catch (e) { console.log(e) }
   }
@@ -126,7 +110,6 @@ export const add = async (req, res, next) => {
         return res.status(200).render("nofound",{message:"no se encontro el Producto"})
       }
       await Product.deleteOne({ _id: req.body._id })
-      fs.unlinkSync(path.join("public/img/products/", req.body.url))
       res.status(200).redirect("/products/edit")  
     } catch (e) { console.log(e) }
   }

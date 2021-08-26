@@ -18,11 +18,15 @@ export const read = async (req, res, next) => {
       let i = 0;
       while(i<=cartfound[0].items.length-1){
         product =  await Product.find({_id:cartfound[0].items[i]._id}).lean()
-        product[0].quantity=cartfound[0].items[i].quantity
-        products.push(product[0])
+        console.log(product[0])
+        if(product[0]){
+          product[0].quantity=cartfound[0].items[i].quantity
+          products.push(product[0])
+        }
+       
       i++
       }
-
+      console.log(products)
   if ((Object.entries(products).length === 0)) {
     return res.status(200).render("nofound",{message:"No hay productos en el carrito",_id:req.user._id})
    }
@@ -45,7 +49,7 @@ export const read = async (req, res, next) => {
         }
         const cart = new Cart(newCart)
         await cart.save()
-        return await res.status(200).redirect(`/cart/${req.user._id}`)
+        return res.status(200).redirect(`/cart/${req.user._id}`)
       }
 
       //si el carrito existe y el producto tambien
@@ -58,7 +62,7 @@ export const read = async (req, res, next) => {
           { $set: cartfound[0] },
           { new: true }
         )
-       return await  res.status(200).redirect(`/cart/${req.user._id}`)
+       return   res.status(200).redirect(`/cart/${req.user._id}`)
       }
       i++
       }

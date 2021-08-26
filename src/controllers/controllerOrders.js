@@ -9,7 +9,7 @@ export const read = async (req, res, next) => {
   try {
     const orders = await Order.find({_idUser:req.user._id}).lean()
         console.log(orders)
-        await res.status(200).render('orders',{orders:orders,_id:req.user._id})  
+       res.status(200).render('orders',{orders:orders,_id:req.user._id})  
   } 
   catch (e) { console.log(e) }
 }
@@ -21,7 +21,7 @@ export const create = async (req, res, next) => {
       const cartfound = await Cart.find({_idUser:req.user._id}).lean()
 
       if ((Object.entries(cartfound).length === 0)) {
-        return res.status(200).render("nofound",{message:"No hay productos en el carrito para comprar"})
+        res.status(200).render("nofound",{message:"No hay productos en el carrito para comprar"})
        }
 
       let product= ""
@@ -32,17 +32,19 @@ export const create = async (req, res, next) => {
       while(i<=cartfound[0].items.length-1){
        
         product = await Product.find({_id:cartfound[0].items[i]._id}).lean()
+        if(product[0]){
         product[0].quantity=cartfound[0].items[i].quantity
         products.push(product[0])
-          //---------------------      
-          const newproduct = {stock:(product[0].stock-cartfound[0].items[i].quantity)}
-          await Product.find({_id:cartfound[0].items[i]._id}).lean()
+        
+        const newproduct = {stock:(product[0].stock-cartfound[0].items[i].quantity)}
+         await Product.find({_id:cartfound[0].items[i]._id}).lean()
          await Product.findOneAndUpdate(
            { _id:cartfound[0].items[i]._id },
            { $set: newproduct },
            { new: true }
          )
-         //---------------------
+      }
+
 
       i++
       }
@@ -58,7 +60,7 @@ export const create = async (req, res, next) => {
             const order= new Order(neworder)
             await order.save()
             await Cart.deleteOne({ _idUser:req.user._id})
-/*
+
          enviarmail({
               from:config.MAIL,
               to: req.user.email,
@@ -71,7 +73,7 @@ export const create = async (req, res, next) => {
             subject: `Orden del usuario ${req.user.name}`,
             html: `Un nuevo usuario con nombre: ${req.user.name} realizo una orden`,
         })
-*/
+
 
              res.status(200).render('order',{order:order,items:order.items,_id:req.user._id})
         } 

@@ -1,7 +1,6 @@
 import express from 'express'
 import http from 'http'
 import  config from './config/config.js'
-import { routes } from './src/routes/routes.js'
 import morgan from 'morgan'
 import { conectarDB } from './config/db.js'
 import passport from 'passport'
@@ -16,6 +15,7 @@ import fileUpload from 'express-fileupload'
 import cors from 'cors'
 import {Server as WebSocketServer } from "socket.io";
 import Sockets from "./sockets/sockets.js";
+import { routesUsers,routerProducts, routesCarts,routesOrders } from "./src/routes/index.js"
 
 
 const app = express()
@@ -50,7 +50,6 @@ app.engine("hbs", handlebars({
 }));
 app.set('views', path.join(__dirname, 'src/views'))
 app.set('view engine', 'hbs');
-
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true }
 app.use(session({
   secret: 'secreto',
@@ -68,7 +67,10 @@ app.use(session({
 ConectarPassport()
 app.use(passport.initialize())
 app.use(passport.session())
-routes(app)
+routerProducts(app)
+routesUsers(app)
+routesCarts(app)
+routesOrders(app)
 
 
 const port = config.PORT|| '3000'

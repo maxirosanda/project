@@ -1,14 +1,22 @@
 {{> navbar}}
 {{#each orders}}
+<div class="mt-5">
 <h2>Pedido con id: {{_id}}</h2>
-<h3>Productos :</h3>
 {{#each items}}
 
-     <h4 class="my-3">Nombre de Producto :{{name}}</h4>
-     <h4>Id del producto{{_id}}</h4>
-     <img src="./img/productos/{{url}}" class="img-fluid mb-2"  alt="Responsive image">
-     <h4 class="fmb-2"> Precio: {{price}} <h4>
-     <h4 class="mb-5"> Cantidad: {{quantity}} </h4>
+<div class="card mb-3 mt-5">
+  <img src="../../img/products/{{url}}" class="card-img-top "  style="width: 25%" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{name}}</h5>
+   <p>Descripcion: {{description}}</p>
+   <p>Cantidad: {{quantity}}</p>
+    <p class="card-text"><small class="text-muted">El codigo de Producto es : {{_id}}</small></p>
+    <h5>Precio: {{price}}</h5>
+</div>
+</div>
+
      
-   {{/each}}   
+   {{/each}} 
+</div>
+<div class="row bg-primary altura"></div>     
  {{/each}}
