@@ -4,7 +4,6 @@
   <thead>
     <tr>
       <th scope="col">Nombre</th>
-      <th scope="col">Descripcion</th>
       <th scope="col">Categoria</th>
       <th scope="col">Precio</th>
       <th scope="col">Stock</th>
@@ -18,7 +17,6 @@
     {{#each products}}
     <form action="/cart" method="POST" class="my-5">
       <th scope="row">{{name}} </th>
-      <td>{{description}}</td>
       <td>{{category}}</td>
       <td>{{price}}</td>
       <td>{{stock}}</td>

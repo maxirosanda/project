@@ -1,4 +1,5 @@
 import Product from '../../models/products.js'
+import Cart from '../../models/carts.js'
 import {generator} from '../utils/generator.js'
 import  fs from 'fs'
 import path from 'path'
@@ -10,6 +11,7 @@ export const edit = async (req,res)=>{
   if (!productfound) {
     return res.status(200).render("nofound",{message:"no se encontro el Producto"})
   }
+
   res.status(200).render('editproduct',{product:productfound,_id:req.user._id})
 }
 
@@ -25,9 +27,24 @@ export const add = async (req, res, next) => {
 
   export const read = async (req, res, next) => {
     try {
-          const products = await Product.find({}).lean()
-
-          res.status(200).render("products",{products:products,_id:req.user._id})
+          let products = await Product.find({}).lean()
+          const cartfound = await Cart.find({_idUser:req.user._id}).lean()
+                    //----------------------------------
+        let product= {}
+        let productsincart=[]
+        let productsfilter
+        let i = 0;
+      while(i<=cartfound[0].items.length-1){
+        product =  await Product.find({_id:cartfound[0].items[i]._id}).lean()
+        product[0].stock= product[0].stock-cartfound[0].items[i].quantity
+        productsfilter=products.filter(el => el._id !== product[0]._id )
+        productsincart.push(product[0])
+      i++
+      }
+      
+      
+      //-----------------------------------------------------
+          res.status(200).render("products",{products:productsfilter,_id:req.user._id})
 
     } 
     catch (e) { console.log(e) }
@@ -40,8 +57,9 @@ export const add = async (req, res, next) => {
           if (!productfound) {
             return res.status(200).render("nofound",{message:"no se encontro el Producto"})
           }
+        
 
-          res.status(200).render("product",{product:productfound,_id:req.user._id}) 
+          res.status(200).render("product",{product:products,_id:req.user._id}) 
     } 
     catch (e) { console.log(e) }
   }

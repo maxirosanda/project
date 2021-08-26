@@ -14,6 +14,9 @@ import path from 'path'
 import methodOverride from 'method-override'
 import fileUpload from 'express-fileupload'
 import cors from 'cors'
+import {Server as WebSocketServer } from "socket.io";
+import Sockets from "./sockets/sockets.js";
+
 
 const app = express()
 const server = http.createServer(app)
@@ -70,7 +73,10 @@ routes(app)
 
 const port = config.PORT|| '3000'
 app.set('port', port)
-server.listen(port).on('error', error => {
+const httpServer = server.listen(port).on('error', error => {
   console.log(`server error:${error}`)
 })
 console.log('Server listening  on port ' + port + ' pid:' + process.pid)
+const io = new WebSocketServer(httpServer);
+
+Sockets(io);
