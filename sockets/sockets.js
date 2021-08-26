@@ -12,7 +12,6 @@ export default  (io) => {
     socket.emit("server:loadmessajes", messajes);
 
     socket.on("client:newmessaje", async (newmessaje) => {
-        console.log({ ...newmessaje, id: uuid() })
       const messaje = new Messaje({ ...newmessaje, id: uuid() })
       await messaje.save()
       io.emit("server:newmessaje", messaje);
