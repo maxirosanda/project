@@ -12,27 +12,7 @@ const savemessaje = (email, body) => {
   });
 };
 
-/**
- * delete a messaje based on an Id
- * @param {string} id a messaje ID
- */
-const deletemessaje = (id) => {
-  socket.emit("client:deletemessaje", id);
-};
 
-/**
- * 
- * @param {string} id messaje ID
- * @param {string} email messaje email 
- * @param {string} body messaje body
- */
-const updatemessaje= (id, email, body) => {
-  socket.emit("client:updatemessaje", {
-    id,
-    email,
-    body,
-  });
-};
 
 socket.on("server:loadmessajes", rendermessajes);
 
