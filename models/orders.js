@@ -9,7 +9,7 @@ const ordersSchema = new mongoose.Schema({
   email: { type: String, require: true },
   address:{type:String,require: true},
   items: { type: Array, require: true },
-  state: { type: String, default:"generated"},
+  state: { type: String, default:"Pendiente"},
   date: { type: Date, default: Date.now }
 
 })

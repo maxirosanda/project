@@ -14,6 +14,41 @@ export const read = async (req, res, next) => {
   catch (e) { console.log(e) }
 }
 
+export const readAdmin = async (req, res, next) => {
+  try {
+    const orders = await Order.find({_idUser:req.user._id}).lean()
+       res.status(200).render('ordersadmin',{orders:orders,_id:req.user._id})  
+  } 
+  catch (e) { console.log(e) }
+}
+
+export const changeState = async (req, res, next) => {
+  const {_id,state} = req.body
+
+    const neworder = {}
+
+    if (state) neworder.state = state
+    try {
+      const orderfound = await Order.find({_id:_id}).lean()
+      
+          if ((Object.entries(orderfound).length === 0)) {
+            return res.status(200).render("nofound",{message:"no se pudo denegar la orden"})
+          }
+
+      await Order.findOneAndUpdate(
+        { _id: _id },
+        { $set: neworder },
+        { new: true }
+      )
+      return res.status(200).redirect("/ordersadmin") 
+    }
+  catch (e) { console.log(e) }
+}
+
+
+
+
+
 
 export const create = async (req, res, next) => {
     try {
