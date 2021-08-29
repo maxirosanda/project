@@ -6,6 +6,7 @@ const routesProducts = app => {
 
 
     //Products
+    app.get('/',middlewareClient.auth,controllerProducts.read)
     app.get('/product/edit/:_id',middlewareAdmin.auth,controllerProducts.edit)
     app.get('/products/edit',middlewareAdmin.auth,controllerProducts.add)
     app.get('/products',middlewareClient.auth,controllerProducts.read)
