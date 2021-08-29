@@ -32,6 +32,10 @@ export const ConectarPassport = () => {
 
   passport.use('register', new LocalStrategy({ passReqToCallback: true },
     function (req, username, password, done) {
+      if (req.body.password!=req.body.password2) {
+        return done(null, false)
+      }
+
       const findOrCreateUser = function () {
         User.findOne({ username: username },
           function (err, user) {
