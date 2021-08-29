@@ -4,6 +4,7 @@ import passport from 'passport'
  const routesUsers = app => {
 
     app.get('/login',controllerSession.viewlogin)
+    app.get('/',controllerSession.viewlogin)
     app.get('/register',controllerSession.viewregister)
 
     app.get('/logout', controllerSession.logout)

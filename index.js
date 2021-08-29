@@ -73,7 +73,7 @@ routesCarts(app)
 routesOrders(app)
 
 
-const port = process.env.PORT|| '3000'
+const port = process.env.PORT || '3000'
 app.set('port', port)
 const httpServer = server.listen(port).on('error', error => {
   console.log(`server error:${error}`)
