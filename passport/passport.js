@@ -46,7 +46,7 @@ export const ConectarPassport = () => {
               newUser.tel = req.body.tel,
               newUser.address = req.body.address,
               newUser.name=req.body.name 
-
+              /*
               enviarmail({
                 from:config.MAIL,
                 to: newUser.email,
@@ -59,7 +59,7 @@ export const ConectarPassport = () => {
               subject: `Nuevo usuario registrado con el nombre de usuario ${newUser.name}`,
               html: `Nuevo usuario registrado con el nombre de usuario ${newUser.name}`,
           })
-
+          */
               newUser.save(function (err) {
                 if (err) { throw err }
                 return done(null, newUser)

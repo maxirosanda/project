@@ -95,7 +95,7 @@ export const create = async (req, res, next) => {
             const order= new Order(neworder)
             await order.save()
             await Cart.deleteOne({ _idUser:req.user._id})
-
+            /*
          enviarmail({
               from:config.MAIL,
               to: req.user.email,
@@ -108,7 +108,7 @@ export const create = async (req, res, next) => {
             subject: `Orden del usuario ${req.user.name}`,
             html: `Un nuevo usuario con nombre: ${req.user.name} realizo una orden`,
         })
-
+        */
 
              res.status(200).render('order',{order:order,items:order.items,_id:req.user._id})
         } 
