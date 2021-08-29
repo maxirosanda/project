@@ -16,7 +16,13 @@ import cors from 'cors'
 import {Server as WebSocketServer } from "socket.io";
 import Sockets from "./sockets/sockets.js";
 import { routesUsers,routerProducts, routesCarts,routesOrders } from "./src/routes/index.js"
+import  cluster from "cluster"
+import loggerInfo from 'pino'
+import loggerError  from 'pino'
+import os from 'os'
 
+const le = loggerError('./logs/error.log')
+const li = loggerInfo()
 
 const app = express()
 const server = http.createServer(app)
@@ -72,7 +78,7 @@ routesUsers(app)
 routesCarts(app)
 routesOrders(app)
 
-
+/*
 const port = process.env.PORT || '3000'
 app.set('port', port)
 const httpServer = server.listen(port).on('error', error => {
@@ -80,5 +86,37 @@ const httpServer = server.listen(port).on('error', error => {
 })
 console.log('Server listening  on port ' + port + ' pid:' + process.pid)
 const io = new WebSocketServer(httpServer);
+*/
 
-Sockets(io);
+const numCpu = os.cpus().length
+
+if(cluster.isMaster && config.PROD=="cluster") {
+    li.info(numCpu)
+    li.info(`process ID: ${process.pid} `)
+
+    for (let i = 0; i < numCpu; i++) {
+        cluster.fork()
+      
+    }
+
+    const httpServer =  cluster.on('exit', worker => {
+        li.info(`Worker, ${worker.process.pid} died ${new Date()}`)
+        cluster.fork()
+    });
+    const io = new WebSocketServer(httpServer)
+    Sockets(io)
+
+} else {
+    const port = process.env.PORT || '8080'
+    console.log('pasa por fork ' + config.PROD)
+    const httpServer =  server.listen(port).on('error',error=>{
+        le.error(`error en el servidor:${error}`)
+    })
+    const io = new WebSocketServer(httpServer)
+    Sockets(io)
+
+    li.info('Server listening on port in mode fork ' + port +' pid:' + process.pid)
+
+}
+
+

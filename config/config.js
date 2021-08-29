@@ -7,8 +7,8 @@ dotenv.config();
     PORT:process.env.PORT,
     MAIL:process.env.MAIL,
     PASSWORDMAIL:process.env.PASSWORDMAIL,
-    BASE:process.env.BASE
-
+    BASE:process.env.BASE,
+    PROD:process.env.PROD
 }
 
 export default config
