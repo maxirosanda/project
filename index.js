@@ -78,15 +78,6 @@ routesUsers(app)
 routesCarts(app)
 routesOrders(app)
 
-/*
-const port = process.env.PORT || '3000'
-app.set('port', port)
-const httpServer = server.listen(port).on('error', error => {
-  console.log(`server error:${error}`)
-})
-console.log('Server listening  on port ' + port + ' pid:' + process.pid)
-const io = new WebSocketServer(httpServer);
-*/
 
 const numCpu = os.cpus().length
 
